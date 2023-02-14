@@ -39,6 +39,7 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 	};
 
 	const createCourse = () => {
+		if (!createValidation()) return;
 		const newCourse = {
 			id: uuidv1(),
 			title,
@@ -50,15 +51,21 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 		createCourseButtonClicked(newCourse);
 	};
 
-	const createValidation = (event) => {
-		event.preventDefault();
-		if (title === '' || description === '' || deleteAuthorList.length === 0) {
+	const createValidation = () => {
+		if (
+			title === '' ||
+			description === '' ||
+			deleteAuthorList.length === 0 ||
+			duration === 0
+		) {
 			alert('Please enter title');
+			return false;
 		}
+		return true;
 	};
 
 	return (
-		<form onSubmit={createValidation} className='p-6'>
+		<form className='p-6'>
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-col'>
 					<p>Title</p>
@@ -68,7 +75,13 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 						onChange={handleTitleChange}
 					/>
 				</div>
-				<Button text='Create Course' onClick={() => createCourse()}></Button>
+				<Button
+					text='Create Course'
+					onClick={(event) => {
+						event.preventDefault();
+						createCourse();
+					}}
+				></Button>
 			</div>
 			<div className='flex flex-col my-6'>
 				<label>Description</label>

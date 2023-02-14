@@ -28,13 +28,14 @@ const Courses = ({
 	mockedAuthorsList,
 	newCourseClick,
 }: ICourses) => {
-	const [searchCourse, setSearchCourse] = useState('');
+	const [searchCourse, setSearchCourse] = useState(mockedCoursesList);
+	const [searchText, setSearchText] = useState('');
 
 	const searchCourseClick = () => {
 		const filteredCourses = mockedCoursesList.filter((course) => {
-			return course.title.toLowerCase().includes(searchCourse.toLowerCase());
+			return course.title.toLowerCase().includes(searchText.toLowerCase());
 		});
-		setSearchCourse(filteredCourses.toString());
+		setSearchCourse(filteredCourses);
 	};
 
 	return (
@@ -44,14 +45,14 @@ const Courses = ({
 					<SearchBar
 						text='Search'
 						placeholderText='Enter course name...'
-						value={searchCourse}
-						onChange={(e) => setSearchCourse(e.target.value)}
+						value={searchText}
+						onChange={(e) => setSearchText(e.target.value)}
 						onClick={searchCourseClick}
 					/>
 				</div>
 				<Button text='Add new course' onClick={newCourseClick} />
 			</div>
-			{mockedCoursesList.map((course) => {
+			{searchCourse.map((course) => {
 				return <CourseCard data={course} authors={mockedAuthorsList} />;
 			})}
 		</div>
