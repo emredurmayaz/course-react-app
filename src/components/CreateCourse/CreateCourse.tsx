@@ -39,7 +39,7 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 	};
 
 	const createCourse = () => {
-		if (!createValidation) return;
+		if (!createValidation()) return;
 		const newCourse = {
 			id: uuidv1(),
 			title,
@@ -50,13 +50,9 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 		};
 		createCourseButtonClicked(newCourse);
 	};
+
 	const createValidation = () => {
-		if (
-			title === '' ||
-			description === '' ||
-			deleteAuthorList.length === 0 ||
-			duration === 0
-		) {
+		if (title === '' || description === '' || duration === 0) {
 			alert('Please fill all fields...');
 			return false;
 		}
@@ -74,7 +70,14 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 						onChange={handleTitleChange}
 					/>
 				</div>
-				<Button text='Create Course' onClick={() => createCourse()}></Button>
+				<Button
+					text='Create Course'
+					onClick={(event) => {
+						createCourse();
+						createValidation();
+						event.preventDefault();
+					}}
+				></Button>
 			</div>
 			<div className='flex flex-col my-6'>
 				<label>Description</label>
