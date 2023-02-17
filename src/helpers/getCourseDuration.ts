@@ -4,7 +4,11 @@ function getCourseDuration(courseDuration: number): string {
 	}
 	const hours = Math.floor(courseDuration / 60);
 	const minutes = courseDuration % 60;
-	return `${hours}h ${minutes}m`;
+
+	const hoursString = hours < 10 ? `0${hours}` : `${hours}`;
+	const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
+
+	return `${hoursString}` + `:` + `${minutesString}` + ` hours`;
 }
 
 export default getCourseDuration;
