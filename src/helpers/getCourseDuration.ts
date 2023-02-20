@@ -8,7 +8,7 @@ function getCourseDuration(courseDuration: number): string {
 	const hoursString = hours < 10 ? `0${hours}` : `${hours}`;
 	const minutesString = minutes < 10 ? `0${minutes}` : `${minutes}`;
 
-	return `${hoursString}` + `:` + `${minutesString}` + ` hours`;
+	return `${hoursString}:${minutesString} hours`;
 }
 
 export default getCourseDuration;
