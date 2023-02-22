@@ -4,16 +4,28 @@ import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import getCourseDuration from '../../helpers/getCourseDuration';
 import { v1 as uuidv1 } from 'uuid';
+import { mockedAuthorsList } from '../../constants';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
-const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
+const CreateCourse = () => {
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
-	const [addAuthorList, setAddAuthorList] = useState(authors);
+	const [addAuthorList, setAddAuthorList] = useState(mockedAuthorsList);
 	const [deleteAuthorList, setDeleteAuthorList] = useState([]);
 	const [author, setAuthor] = useState('');
 	const [duration, setDuration] = useState();
+
+	const createCourseButtonClicked = (newCourse) => {
+		// setCourses([...courses, newCourse]);
+		// setshowNewCourse((prev) => !prev);
+		console.log(newCourse);
+	};
+
+	const addNewAuthor = (newAuthor) => {
+		// setAuthors([...authors, newAuthor]);
+		console.log(newAuthor);
+	};
 
 	const handleTitleChange = (value) => {
 		if (!forbiddenSymbols.test(value)) {

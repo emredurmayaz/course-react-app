@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from './components/Logo/Logo';
-import Button from 'src/common/Button/Button';
+import { Link } from 'react-router-dom';
 
 function Header(): JSX.Element {
 	return (
@@ -8,7 +8,12 @@ function Header(): JSX.Element {
 			<Logo />
 			<div className='flex flex-row gap-x-12 items-center'>
 				<h3 className='font-sans text-lg font-bold'>Emre</h3>
-				<Button text={'Logout'} />
+				<Link
+					to='/login'
+					className='font-bold py-2 px-2 text-black-600 border-4 border-red-600'
+				>
+					Logout
+				</Link>
 			</div>
 		</div>
 	);
