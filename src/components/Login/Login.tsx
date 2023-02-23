@@ -8,8 +8,6 @@ interface ILogin {
 	password: string;
 }
 
-//Login should have functionality that sends request to API for getting token.See /login endpoint in API Swagger.
-
 function Login() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
