@@ -9,21 +9,19 @@ import CreateCoursePage from './pages/CreateCoursePage/CreateCoursePage';
 
 function App() {
 	return (
-		<>
-			<Routes>
-				<Route path='/' element={<Layout />}>
-					<Route index element={<Navigate to='/login' />} />
-					<Route path='/registration' element={<RegistrationPage />} />
-					<Route path='/login' element={<LoginPage />} />
+		<Routes>
+			<Route path='/' element={<Layout />}>
+				<Route index element={<Navigate to='/login' />} />
+				<Route path='/registration' element={<RegistrationPage />} />
+				<Route path='/login' element={<LoginPage />} />
 
-					<Route path='/courses'>
-						<Route index element={<CoursesPage />} />
-						<Route path=':courseId' element={<CourseInfoPage />} />
-					</Route>
-					<Route path='/courses/add' element={<CreateCoursePage />} />
+				<Route path='/courses'>
+					<Route index element={<CoursesPage />} />
+					<Route path=':courseId' element={<CourseInfoPage />} />
 				</Route>
-			</Routes>
-		</>
+				<Route path='/courses/add' element={<CreateCoursePage />} />
+			</Route>
+		</Routes>
 	);
 }
 

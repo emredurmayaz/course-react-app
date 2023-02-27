@@ -24,7 +24,9 @@ function Login() {
 				},
 			});
 			if (!response.ok) {
-				throw new Error('Something went wrong');
+				throw new Error(
+					'There is something wrong with the response from the API'
+				);
 			}
 			const result = await response.json();
 			localStorage.setItem('token', result.result);

@@ -33,7 +33,6 @@ const Registration = () => {
 
 			const result = await response.json();
 			console.log(result);
-			// localStorage.setItem('token', result.result);
 		} catch (error) {
 			throw new Error(error);
 		}
@@ -57,8 +56,8 @@ const Registration = () => {
 			<h1 className='font-sans font-bold text-xl'>Registration</h1>
 			{hasError && (
 				<p className='text-red-600'>
-					Invalid email or password.Your password must be at least 6 characters
-					long.
+					Invalid email or password.Your password must be a string and length
+					should be 6 characters minimum
 				</p>
 			)}
 			<div className='flex flex-col flex-start gap-y-4'>

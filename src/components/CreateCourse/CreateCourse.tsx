@@ -17,14 +17,7 @@ const CreateCourse = () => {
 	const [duration, setDuration] = useState();
 
 	const createCourseButtonClicked = (newCourse) => {
-		// setCourses([...courses, newCourse]);
-		// setshowNewCourse((prev) => !prev);
 		console.log(newCourse);
-	};
-
-	const addNewAuthor = (newAuthor) => {
-		// setAuthors([...authors, newAuthor]);
-		console.log(newAuthor);
 	};
 
 	const handleTitleChange = (value) => {
@@ -116,7 +109,6 @@ const CreateCourse = () => {
 						<Button
 							text='Create Author'
 							onClick={(event) => {
-								addNewAuthor({ id: uuidv1(), name: author });
 								deleteAuthor({ id: uuidv1(), name: author });
 								setAuthor('');
 								event.preventDefault();

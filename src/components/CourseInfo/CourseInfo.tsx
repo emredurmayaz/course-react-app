@@ -19,9 +19,9 @@ function CourseInfo() {
 		return <div>Course not found</div>;
 	}
 
-	const authors = mockedAuthorsList.filter((author) => {
-		return course.authors.includes(author.id);
-	});
+	const authors = mockedAuthorsList.filter((author) =>
+		course.authors.includes(author.id)
+	);
 
 	return (
 		<div className='font-bold py-2 px-2 mt-16 text-black-600 border-4 border-blue-300'>
