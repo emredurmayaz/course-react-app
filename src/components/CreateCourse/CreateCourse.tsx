@@ -16,10 +16,6 @@ const CreateCourse = () => {
 	const [author, setAuthor] = useState('');
 	const [duration, setDuration] = useState();
 
-	const createCourseButtonClicked = (newCourse) => {
-		console.log(newCourse);
-	};
-
 	const handleTitleChange = (value) => {
 		if (!forbiddenSymbols.test(value)) {
 			setTitle(value.target.value);
@@ -53,7 +49,6 @@ const CreateCourse = () => {
 			duration: duration,
 			authors: deleteAuthorList.map((author) => author.id),
 		};
-		createCourseButtonClicked(newCourse);
 	};
 
 	const createValidation = () => {
