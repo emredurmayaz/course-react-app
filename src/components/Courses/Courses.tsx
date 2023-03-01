@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/store';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import { mockedAuthorsList, mockedCoursesList } from '../../constants';
 import { Link } from 'react-router-dom';
+import { fetchCourses } from 'src/store/courses/reducer';
 
 export interface ICoursesListItem {
 	id: string;
@@ -19,14 +21,20 @@ export interface IAuthorListItem {
 }
 
 const Courses = () => {
-	const [searchCourse, setSearchCourse] = useState(mockedCoursesList);
 	const [searchText, setsearchText] = useState('');
+	const courses = useAppSelector((state) => state.courses.responseData) as any;
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(fetchCourses());
+		console.log(searchText);
+	}, [dispatch, searchText]);
 
 	const searchCourseClick = () => {
 		const filteredCourses = mockedCoursesList.filter((course) => {
 			return course.title.toLowerCase().includes(searchText.toLowerCase());
 		});
-		setSearchCourse(filteredCourses);
+		// setSearchCourse(filteredCourses);
 	};
 
 	return (
@@ -48,7 +56,7 @@ const Courses = () => {
 					Add new course
 				</Link>
 			</div>
-			{searchCourse.map((course) => {
+			{courses?.map((course) => {
 				return <CourseCard data={course} authors={mockedAuthorsList} />;
 			})}
 		</div>
