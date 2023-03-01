@@ -4,7 +4,7 @@ import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import { mockedAuthorsList, mockedCoursesList } from '../../constants';
 import { Link } from 'react-router-dom';
-import { fetchCourses } from 'src/store/courses/reducer';
+import { fetchCourses, fetchAuthors } from '../../services';
 
 export interface ICoursesListItem {
 	id: string;
@@ -23,11 +23,11 @@ export interface IAuthorListItem {
 const Courses = () => {
 	const [searchText, setsearchText] = useState('');
 	const courses = useAppSelector((state) => state.courses.responseData) as any;
+	const authors = useAppSelector((state) => state.authors) as any;
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(fetchCourses());
-		console.log(searchText);
 	}, [dispatch, searchText]);
 
 	const searchCourseClick = () => {
@@ -57,7 +57,7 @@ const Courses = () => {
 				</Link>
 			</div>
 			{courses?.map((course) => {
-				return <CourseCard data={course} authors={mockedAuthorsList} />;
+				return <CourseCard data={course} authors={authors} />;
 			})}
 		</div>
 	);

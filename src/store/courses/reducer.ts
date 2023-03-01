@@ -1,18 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchCourses } from '../../services';
-import axios from 'axios';
-
-import {
-	GET_COURSES,
-	SAVE_COURSES,
-	DELETE_COURSE,
-	UPDATE_COURSE,
-	ADD_COURSE,
-	Course,
-} from './types';
+import { fetchCourses, fetchAuthors } from '../../services';
+import { Course, Author } from './types';
 
 interface ApiResponseType {
 	data: Course[];
+	authorData: Author[];
 }
 
 export interface StateType {
@@ -31,14 +23,10 @@ export const coursesSlice = createSlice({
 		builder.addCase(fetchCourses.fulfilled, (state, action) => {
 			state.responseData = action.payload.result;
 		});
+		builder.addCase(fetchAuthors.fulfilled, (state, action) => {
+			state.responseData = action.payload.result;
+		});
 	},
 });
-
-// export const {
-// 	getCoursesSuccess,
-// 	saveCourseSuccess,
-// 	deleteCourseSuccess,
-// 	updateCourseSuccess,
-// } = coursesSlice.actions;
 
 export default coursesSlice.reducer;

@@ -12,3 +12,8 @@ export type Course = {
 	duration: 0;
 	authors: [''];
 };
+
+export type Author = {
+	name: 'string';
+	id: 'string';
+};
