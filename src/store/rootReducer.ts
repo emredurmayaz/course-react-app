@@ -1,5 +1,3 @@
-// combine your reducers here.
-
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import courses from './courses/reducer';
 import authors from './authors/reducer';

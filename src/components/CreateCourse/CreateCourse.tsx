@@ -5,6 +5,8 @@ import Button from '../../common/Button/Button';
 import getCourseDuration from '../../helpers/getCourseDuration';
 import { v1 as uuidv1 } from 'uuid';
 import { mockedAuthorsList } from '../../constants';
+import { useAppDispatch } from 'src/store';
+import { addCourseService, addAuthorService } from '../../services';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
@@ -15,6 +17,7 @@ const CreateCourse = () => {
 	const [deleteAuthorList, setDeleteAuthorList] = useState([]);
 	const [author, setAuthor] = useState('');
 	const [duration, setDuration] = useState();
+	const dispatch = useAppDispatch();
 
 	const handleTitleChange = (value) => {
 		if (!forbiddenSymbols.test(value)) {
@@ -49,6 +52,20 @@ const CreateCourse = () => {
 			duration: duration,
 			authors: deleteAuthorList.map((author) => author.id),
 		};
+		dispatch(addCourseService(newCourse));
+	};
+
+	const createAuthor = () => {
+		if (author === '') {
+			alert('Please fill all fields...');
+			return;
+		}
+		const newAuthor = {
+			id: uuidv1(),
+			name: author,
+		};
+		dispatch(addAuthorService(newAuthor));
+		setAuthor('');
 	};
 
 	const createValidation = () => {
@@ -105,7 +122,7 @@ const CreateCourse = () => {
 							text='Create Author'
 							onClick={(event) => {
 								deleteAuthor({ id: uuidv1(), name: author });
-								setAuthor('');
+								createAuthor();
 								event.preventDefault();
 							}}
 						/>

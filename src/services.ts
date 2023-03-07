@@ -1,33 +1,13 @@
-// import { getCoursesSuccess } from './store/courses/reducer';
-// import { getAuthorsSuccess } from './store/authors/reducer';
-import {
-	addCourseAction,
-	getCoursesAction,
-	updateCourseAction,
-	deleteCourseAction,
-	saveCoursesAction,
-} from './store/courses/actions';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { CourseResult } from './store/courses/types';
+import { AuthorsResult } from './store/authors/types';
 import axios from 'axios';
-
-//Get courses data from the back-end. See SWAGGER /courses/all API.
-//localhost:4000/api/courses/all
-// export const addCourse = (course) => async (dispatch) => {
-// 	try {
-// 		const response = await axios.post('localhost:4000/api/courses/add', course);
-// 		dispatch(addCourseAction(response.data));
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// };
-
-// export const getCourses = () => async (dispatch) => {};
 
 export const fetchCourses = createAsyncThunk(
 	'courses/fetchCourses',
 	async () => {
 		return axios
-			.get(` http://localhost:4000/courses/all`)
+			.get(`http://localhost:4000/courses/all`)
 			.then((res) => res.data);
 	}
 );
@@ -36,30 +16,67 @@ export const fetchAuthors = createAsyncThunk(
 	'authors/fetchAuthors',
 	async () => {
 		return axios
-			.get(` http://localhost:4000/authors/all`)
+			.get('http://localhost:4000/authors/all')
 			.then((res) => res.data);
 	}
 );
 
-// export const updateCourse = (course) => async (dispatch) => {
-// 	try {
-// 		const response = await axios.put(
-// 			`localhost:4000/api/courses/${course.id}`,
-// 			course
-// 		);
-// 		dispatch(updateCourseAction(response.data));
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// };
+export const saveLoginService = createAsyncThunk(
+	'login/saveLogin',
+	async (userdata: { email: string; password: string }) => {
+		return axios
+			.post(`http://localhost:4000/login`, {
+				email: userdata.email,
+				password: userdata.password,
+			})
+			.then((res) => {
+				return res.data;
+			});
+	}
+);
 
-// export const deleteCourse = (course) => async (dispatch) => {
-// 	try {
-// 		const response = await axios.delete(
-// 			`localhost:4000/api/courses/${course.id}`
-// 		);
-// 		dispatch(deleteCourseAction(response.data));
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// };
+export const saveLogoutService = createAsyncThunk(
+	'logout/saveLogout',
+	async () => {
+		return axios
+			.delete(`http://localhost:4000/logout`, {
+				headers: { Authorization: `${localStorage.getItem('token')}` },
+			})
+			.then((res) => res.data);
+	}
+);
+
+export const deleteCourseService = createAsyncThunk(
+	'courses/delete',
+	async (id: string) => {
+		return axios
+			.delete(`http://localhost:4000/courses/${id}`, {
+				headers: { Authorization: `${localStorage.getItem('token')}` },
+			})
+			.then((res) => res.data);
+	}
+);
+
+export const addCourseService = createAsyncThunk(
+	'courses/add',
+	async (course: CourseResult) => {
+		return axios
+			.post(`http://localhost:4000/courses/add`, course, {
+				headers: { Authorization: `${localStorage.getItem('token')}` },
+			})
+			.then((res) => res.data);
+	}
+);
+
+export const addAuthorService = createAsyncThunk(
+	'authors/add',
+	async (author: AuthorsResult) => {
+		return axios
+			.post(
+				`http://localhost:4000/authors/add`,
+				{ author },
+				{ headers: { Authorization: `${localStorage.getItem('token')}` } }
+			)
+			.then((res) => res.data);
+	}
+);

@@ -7,13 +7,15 @@ export const UPDATE_COURSE = 'UPDATE_COURSE';
 export const GET_COURSES = 'GET_COURSES';
 
 export type Course = {
-	title: 'string';
-	description: 'string';
-	duration: 0;
-	authors: [''];
+	successful?: boolean;
+	result: CourseResult[];
 };
 
-export type Author = {
-	name: 'string';
-	id: 'string';
+export type CourseResult = {
+	title: string;
+	description: string;
+	creationDate: string;
+	duration: number;
+	authors: string[];
+	id: string;
 };

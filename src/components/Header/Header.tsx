@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import Logo from './components/Logo/Logo';
 import { useNavigate } from 'react-router-dom';
 import Button from 'src/common/Button/Button';
+import { saveLogoutService } from 'src/services';
+import { useAppDispatch, useAppSelector } from 'src/store';
 
 function Header(): JSX.Element {
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+	const data = useAppSelector((state) => state.user.response);
 
 	function handleLogout() {
-		setIsUserLoggedIn(!isUserLoggedIn);
+		dispatch(saveLogoutService());
+		setIsUserLoggedIn(false);
+		localStorage.removeItem('token');
 		navigate('/login');
 	}
 

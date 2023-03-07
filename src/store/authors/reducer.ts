@@ -1,22 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchAuthors, addAuthorService } from '../../services';
+
+interface AuthorsApiResponseType {
+	successful: boolean;
+	result: [
+		{
+			name: string;
+			id: string;
+		}
+	];
+}
+export interface StateType {
+	responseData: AuthorsApiResponseType;
+}
+
+const initialState: StateType = {
+	responseData: null,
+};
 
 export const authorsSlice = createSlice({
 	name: 'authors',
-	initialState: [],
-
-	// Authors reducer has logic:
-	// Save a new author.
-	// Get authors. Save authors to store after getting them from API. See Swagger /authors/all .
-	reducers: {
-		getAuthorsSuccess: (state, action) => {
-			return action.payload;
-		},
-		saveAuthorSuccess: (state, action) => {
-			return [...state, action.payload];
-		},
+	initialState,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder.addCase(fetchAuthors.fulfilled, (state, action) => {
+			state.responseData = action.payload;
+		});
+		builder.addCase(addAuthorService.fulfilled, (state, action) => {
+			state.responseData = action.payload.result;
+		});
 	},
 });
-
-export const { getAuthorsSuccess, saveAuthorSuccess } = authorsSlice.actions;
 
 export default authorsSlice.reducer;

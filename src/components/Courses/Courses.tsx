@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
-import { mockedAuthorsList, mockedCoursesList } from '../../constants';
 import { Link } from 'react-router-dom';
-import { fetchCourses, fetchAuthors } from '../../services';
+import { fetchCourses } from '../../services';
 
 export interface ICoursesListItem {
 	id: string;
@@ -22,20 +21,19 @@ export interface IAuthorListItem {
 
 const Courses = () => {
 	const [searchText, setsearchText] = useState('');
-	const courses = useAppSelector((state) => state.courses.responseData) as any;
-	const authors = useAppSelector((state) => state.authors) as any;
+	const courses = useAppSelector((state) => state.courses.responseData);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(fetchCourses());
-	}, [dispatch, searchText]);
+	}, [dispatch]);
 
-	const searchCourseClick = () => {
-		const filteredCourses = mockedCoursesList.filter((course) => {
-			return course.title.toLowerCase().includes(searchText.toLowerCase());
-		});
-		// setSearchCourse(filteredCourses);
-	};
+	// const searchCourseClick = () => {
+	// 	const filteredCourses = courses.filter((course) => {
+	// 		return course.title.toLowerCase().includes(searchText.toLowerCase());
+	// 	});
+	// 	// setSearchCourse(filteredCourses);
+	// }; IN PROGRESS
 
 	return (
 		<div className='p-6'>
@@ -46,7 +44,7 @@ const Courses = () => {
 						placeholderText='Enter course name...'
 						value={searchText}
 						onChange={(e) => setsearchText(e.target.value)}
-						onClick={searchCourseClick}
+						// onClick={searchCourseClick}
 					/>
 				</div>
 				<Link
@@ -56,8 +54,8 @@ const Courses = () => {
 					Add new course
 				</Link>
 			</div>
-			{courses?.map((course) => {
-				return <CourseCard data={course} authors={authors} />;
+			{courses?.result.map((course) => {
+				return <CourseCard data={course} />;
 			})}
 		</div>
 	);

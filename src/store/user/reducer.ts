@@ -1,33 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { saveLoginService, saveLogoutService } from '../../services';
+
+export interface LoginApiResponseType {
+	successful: boolean;
+	result: string;
+	user: {
+		email: string;
+		name: string;
+	};
+}
+export interface StateType {
+	response: LoginApiResponseType;
+}
+
+const initialState: StateType = {
+	response: null,
+};
 
 export const userSlice = createSlice({
 	name: 'user',
-	initialState: {
-		isAuth: false,
-		name: '',
-		email: '',
-		token: '',
-	},
-	//User reducer has logic:
-	//After success login isAuth property has value true, save token, email and name.
-	//After logout isAuth property has value false, token, email and name have value as empty string.
-	reducers: {
-		loginSuccess: (state, action) => {
-			state.isAuth = true;
-			state.name = action.payload.name;
-			state.email = action.payload.email;
-			state.token = action.payload.token;
-		},
-	},
-	extraReducers: {
-		'user/logout': (state) => {
-			state.isAuth = false;
-			state.name = '';
-			state.email = '';
-			state.token = '';
-		},
+	initialState: initialState,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder.addCase(saveLoginService.fulfilled, (state, action) => {
+			state.response = action.payload;
+		});
+		builder.addCase(saveLogoutService.fulfilled, (state, action) => {
+			state.response = action.payload;
+		});
 	},
 });
 
-export const { loginSuccess } = userSlice.actions;
 export default userSlice.reducer;

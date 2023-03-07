@@ -1,3 +1,2 @@
-export const SAVE_COURSES = 'SAVE_COURSES';
-export const DELETE_COURSE = 'DELETE_COURSE';
-export const ADD_COURSE = 'ADD_COURSE';
+export const SAVE_USER = 'SAVE_USER';
+export const DELETE_USER = 'DELETE_USER';
