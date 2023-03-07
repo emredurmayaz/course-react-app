@@ -1,40 +1,27 @@
-import React, { useState } from 'react';
-import Header from './components/Header/Header';
-import Courses from './components/Courses/Courses';
-import CreateCourse from './components/CreateCourse/CreateCourse';
-import { mockedAuthorsList, mockedCoursesList } from '../src/constants';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import CourseInfoPage from './pages/CourseInfoPage/CourseInfoPage';
+import Layout from './layout/Layout';
+import CoursesPage from './pages/CoursesPage/CoursesPage';
+import CreateCoursePage from './pages/CreateCoursePage/CreateCoursePage';
 
 function App() {
-	const [showNewCourse, setshowNewCourse] = useState(true);
-	const [courses, setCourses] = useState(mockedCoursesList);
-	const [authors, setAuthors] = useState(mockedAuthorsList);
-
-	const createCourseButtonClicked = (newCourse) => {
-		setCourses([...courses, newCourse]);
-		setshowNewCourse((prev) => !prev);
-	};
-
-	const addNewAuthor = (newAuthor) => {
-		setAuthors([...authors, newAuthor]);
-	};
-
 	return (
-		<>
-			<Header />
-			{showNewCourse ? (
-				<Courses
-					newCourseClick={() => setshowNewCourse((prev) => !prev)}
-					mockedCoursesList={courses}
-					mockedAuthorsList={authors}
-				/>
-			) : (
-				<CreateCourse
-					addNewAuthor={addNewAuthor}
-					createCourseButtonClicked={createCourseButtonClicked}
-					authors={authors}
-				/>
-			)}
-		</>
+		<Routes>
+			<Route path='/' element={<Layout />}>
+				<Route index element={<Navigate to='/login' />} />
+				<Route path='/registration' element={<RegistrationPage />} />
+				<Route path='/login' element={<LoginPage />} />
+
+				<Route path='/courses'>
+					<Route index element={<CoursesPage />} />
+					<Route path=':courseId' element={<CourseInfoPage />} />
+				</Route>
+				<Route path='/courses/add' element={<CreateCoursePage />} />
+			</Route>
+		</Routes>
 	);
 }
 

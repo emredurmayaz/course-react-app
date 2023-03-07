@@ -4,13 +4,14 @@ import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import getCourseDuration from '../../helpers/getCourseDuration';
 import { v1 as uuidv1 } from 'uuid';
+import { mockedAuthorsList } from '../../constants';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
-const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
+const CreateCourse = () => {
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
-	const [addAuthorList, setAddAuthorList] = useState(authors);
+	const [addAuthorList, setAddAuthorList] = useState(mockedAuthorsList);
 	const [deleteAuthorList, setDeleteAuthorList] = useState([]);
 	const [author, setAuthor] = useState('');
 	const [duration, setDuration] = useState();
@@ -48,7 +49,6 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 			duration: duration,
 			authors: deleteAuthorList.map((author) => author.id),
 		};
-		createCourseButtonClicked(newCourse);
 	};
 
 	const createValidation = () => {
@@ -104,7 +104,6 @@ const CreateCourse = ({ authors, createCourseButtonClicked, addNewAuthor }) => {
 						<Button
 							text='Create Author'
 							onClick={(event) => {
-								addNewAuthor({ id: uuidv1(), name: author });
 								deleteAuthor({ id: uuidv1(), name: author });
 								setAuthor('');
 								event.preventDefault();

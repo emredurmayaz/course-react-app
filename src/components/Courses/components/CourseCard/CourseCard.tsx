@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../../../../common/Button/Button';
 import { ICoursesListItem, IAuthorListItem } from '../../Courses';
 import getCourseDuration from '../../../../helpers/getCourseDuration';
+import { useNavigate } from 'react-router-dom';
 
 interface ICourseCard {
 	data: ICoursesListItem;
@@ -25,6 +26,8 @@ const CourseCard = ({ data, authors }: ICourseCard) => {
 		const author = authors.find((author) => author.id === authorId);
 		return author?.name + ',';
 	});
+	const navigate = useNavigate();
+
 	return (
 		<div
 			key={data.id}
@@ -43,7 +46,10 @@ const CourseCard = ({ data, authors }: ICourseCard) => {
 					value={getCourseDuration(data.duration)}
 				/>
 				<RightText title='Created: ' value={data.creationDate} />
-				<Button text='Show Course' />
+				<Button
+					text='Show Course'
+					onClick={() => navigate(`/courses/${data.id}`)}
+				/>
 			</div>
 		</div>
 	);

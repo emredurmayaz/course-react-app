@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import CourseCard from './components/CourseCard/CourseCard';
-import Button from 'src/common/Button/Button';
 import SearchBar from './components/SearchBar/SearchBar';
+import { mockedAuthorsList, mockedCoursesList } from '../../constants';
+import { Link } from 'react-router-dom';
 
 export interface ICoursesListItem {
 	id: string;
@@ -17,17 +18,7 @@ export interface IAuthorListItem {
 	name: string;
 }
 
-interface ICourses {
-	mockedCoursesList: ICoursesListItem[];
-	mockedAuthorsList: IAuthorListItem[];
-	newCourseClick: () => void;
-}
-
-const Courses = ({
-	mockedCoursesList,
-	mockedAuthorsList,
-	newCourseClick,
-}: ICourses) => {
+const Courses = () => {
 	const [searchCourse, setSearchCourse] = useState(mockedCoursesList);
 	const [searchText, setsearchText] = useState('');
 
@@ -50,7 +41,12 @@ const Courses = ({
 						onClick={searchCourseClick}
 					/>
 				</div>
-				<Button text='Add new course' onClick={newCourseClick} />
+				<Link
+					to={'/courses/add'}
+					className='border-2 border-red-600 py-2 px-2 text-black-600 font-bold'
+				>
+					Add new course
+				</Link>
 			</div>
 			{searchCourse.map((course) => {
 				return <CourseCard data={course} authors={mockedAuthorsList} />;
