@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Button from '../../../../common/Button/Button';
 import { IAuthorListItem } from '../../Courses';
-import { Course, CourseResult } from '../../../../store/courses/types';
+import { CourseResult } from '../../../../store/courses/types';
 import { AuthorsResult } from '../../../../store/authors/types';
 import getCourseDuration from '../../../../helpers/getCourseDuration';
 import { useNavigate } from 'react-router-dom';

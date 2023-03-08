@@ -3,7 +3,7 @@ import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { saveLoginService } from '../../services';
+import { saveLoginService, getUserService } from '../../services';
 
 interface ILogin {
 	email: string;
@@ -21,6 +21,7 @@ function Login() {
 
 	const sendRequest = () => {
 		dispatch(saveLoginService({ email, password }));
+		dispatch(getUserService());
 	};
 
 	useEffect(() => {

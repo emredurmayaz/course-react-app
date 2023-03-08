@@ -5,8 +5,11 @@ export interface LoginApiResponseType {
 	successful: boolean;
 	result: string;
 	user: {
+		isAuth: boolean;
 		email: string;
 		name: string;
+		role: string;
+		token: string;
 	};
 }
 export interface StateType {

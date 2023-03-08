@@ -57,6 +57,17 @@ export const deleteCourseService = createAsyncThunk(
 	}
 );
 
+export const updateCourseService = createAsyncThunk(
+	'courses/update',
+	async (id: string) => {
+		return axios
+			.put(`http://localhost:4000/courses/${id}`, {
+				headers: { Authorization: `${localStorage.getItem('token')}` },
+			})
+			.then((res) => res.data);
+	}
+);
+
 export const addCourseService = createAsyncThunk(
 	'courses/add',
 	async (course: CourseResult) => {
@@ -80,3 +91,11 @@ export const addAuthorService = createAsyncThunk(
 			.then((res) => res.data);
 	}
 );
+
+export const getUserService = createAsyncThunk('users/getUser', async () => {
+	return axios
+		.get(`http://localhost:4000/users/me`, {
+			headers: { Authorization: `${localStorage.getItem('token')}` },
+		})
+		.then((res) => res.data);
+});
