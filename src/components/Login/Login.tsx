@@ -11,7 +11,7 @@ interface ILogin {
 	name: string;
 }
 
-function Login() {
+function Login({ setUserData }) {
 	const [email, setEmail] = useState('emredurmayaz@hotmail.com');
 	const [password, setPassword] = useState('Bursa1963.');
 	const [hasError, setError] = useState(false);
@@ -25,15 +25,16 @@ function Login() {
 
 	useEffect(() => {
 		if (data && data.successful) {
+			localStorage.setItem('token', data.result);
+			setUserData(data.user);
 			navigate('/courses');
 		}
-		console.log(data);
 	}, [data]);
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = (event) => {
 		try {
 			event.preventDefault();
-			await sendRequest();
+			sendRequest();
 		} catch (error) {
 			setError(true);
 		}
