@@ -12,10 +12,10 @@ export type Course = {
 };
 
 export type CourseResult = {
+	id: string;
 	title: string;
 	description: string;
 	creationDate: string;
 	duration: number;
 	authors: string[];
-	id: string;
 };

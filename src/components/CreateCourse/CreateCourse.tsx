@@ -16,7 +16,7 @@ const CreateCourse = () => {
 	const [addAuthorList, setAddAuthorList] = useState(mockedAuthorsList);
 	const [deleteAuthorList, setDeleteAuthorList] = useState([]);
 	const [author, setAuthor] = useState('');
-	const [duration, setDuration] = useState();
+	const [duration, setDuration] = useState(0);
 	const dispatch = useAppDispatch();
 
 	const handleTitleChange = (value) => {
@@ -45,11 +45,10 @@ const CreateCourse = () => {
 	const createCourse = () => {
 		if (!createValidation()) return;
 		const newCourse = {
-			id: uuidv1(),
 			title,
 			description,
 			creationDate: new Date().toLocaleDateString('tr-TR'),
-			duration: duration,
+			duration: Number(duration),
 			authors: deleteAuthorList.map((author) => author.id),
 		};
 		dispatch(addCourseService(newCourse));
@@ -60,11 +59,7 @@ const CreateCourse = () => {
 			alert('Please fill all fields...');
 			return;
 		}
-		const newAuthor = {
-			id: uuidv1(),
-			name: author,
-		};
-		dispatch(addAuthorService(newAuthor));
+		dispatch(addAuthorService(author));
 		setAuthor('');
 	};
 
