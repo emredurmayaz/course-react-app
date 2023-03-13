@@ -1,45 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'src/store';
+import { saveLoginService } from '../../services';
 
 interface ILogin {
 	email: string;
 	password: string;
+	name: string;
 }
 
-function Login() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+function Login({ setUserData }) {
+	const [email, setEmail] = useState('emredurmayaz@hotmail.com');
+	const [password, setPassword] = useState('Bursa1963.');
 	const [hasError, setError] = useState(false);
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+	const data = useAppSelector((state) => state.user.response);
 
-	const sendRequest = async () => {
-		try {
-			const response = await fetch('http://localhost:4000/login', {
-				method: 'POST',
-				body: JSON.stringify({ email, password }),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			if (!response.ok) {
-				throw new Error(
-					'There is something wrong with the response from the API'
-				);
-			}
-			const result = await response.json();
-			localStorage.setItem('token', result.result);
-		} catch (error) {
-			throw new Error(error);
-		}
+	const sendRequest = () => {
+		dispatch(saveLoginService({ email, password }));
 	};
 
-	const handleSubmit = async (event) => {
+	useEffect(() => {
+		if (data && data.successful) {
+			localStorage.setItem('token', data.result);
+			setUserData(data.user);
+			navigate('/courses');
+		}
+	}, [data]);
+
+	const handleSubmit = (event) => {
 		try {
 			event.preventDefault();
-			await sendRequest();
-			navigate('/courses');
+			sendRequest();
 		} catch (error) {
 			setError(true);
 		}

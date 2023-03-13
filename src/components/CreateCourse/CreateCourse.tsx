@@ -5,6 +5,9 @@ import Button from '../../common/Button/Button';
 import getCourseDuration from '../../helpers/getCourseDuration';
 import { v1 as uuidv1 } from 'uuid';
 import { mockedAuthorsList } from '../../constants';
+import { useAppDispatch } from 'src/store';
+import { addCourseService, addAuthorService } from '../../services';
+import { useNavigate } from 'react-router-dom';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
@@ -14,7 +17,9 @@ const CreateCourse = () => {
 	const [addAuthorList, setAddAuthorList] = useState(mockedAuthorsList);
 	const [deleteAuthorList, setDeleteAuthorList] = useState([]);
 	const [author, setAuthor] = useState('');
-	const [duration, setDuration] = useState();
+	const [duration, setDuration] = useState(0);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const handleTitleChange = (value) => {
 		if (!forbiddenSymbols.test(value)) {
@@ -42,13 +47,29 @@ const CreateCourse = () => {
 	const createCourse = () => {
 		if (!createValidation()) return;
 		const newCourse = {
-			id: uuidv1(),
 			title,
 			description,
 			creationDate: new Date().toLocaleDateString('tr-TR'),
-			duration: duration,
+			duration: Number(duration),
 			authors: deleteAuthorList.map((author) => author.id),
 		};
+		dispatch(addCourseService(newCourse));
+		if (deleteAuthorList.length > 0) {
+			deleteAuthorList.forEach((author) => {
+				dispatch(addAuthorService(author));
+			});
+		}
+		navigate('/courses');
+		//There is a problem with ID it says author has to have actual ID.
+	};
+
+	const createAuthor = () => {
+		if (author === '') {
+			alert('Please fill all fields...');
+			return;
+		}
+		dispatch(addAuthorService(author));
+		setAuthor('');
 	};
 
 	const createValidation = () => {
@@ -105,7 +126,7 @@ const CreateCourse = () => {
 							text='Create Author'
 							onClick={(event) => {
 								deleteAuthor({ id: uuidv1(), name: author });
-								setAuthor('');
+								createAuthor();
 								event.preventDefault();
 							}}
 						/>
