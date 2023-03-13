@@ -7,6 +7,7 @@ import { v1 as uuidv1 } from 'uuid';
 import { mockedAuthorsList } from '../../constants';
 import { useAppDispatch } from 'src/store';
 import { addCourseService, addAuthorService } from '../../services';
+import { useNavigate } from 'react-router-dom';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
@@ -18,6 +19,7 @@ const CreateCourse = () => {
 	const [author, setAuthor] = useState('');
 	const [duration, setDuration] = useState(0);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
 	const handleTitleChange = (value) => {
 		if (!forbiddenSymbols.test(value)) {
@@ -52,6 +54,13 @@ const CreateCourse = () => {
 			authors: deleteAuthorList.map((author) => author.id),
 		};
 		dispatch(addCourseService(newCourse));
+		if (deleteAuthorList.length > 0) {
+			deleteAuthorList.forEach((author) => {
+				dispatch(addAuthorService(author));
+			});
+		}
+		navigate('/courses');
+		//There is a problem with ID it says author has to have actual ID.
 	};
 
 	const createAuthor = () => {
