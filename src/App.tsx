@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
 import LoginPage from './pages/LoginPage/LoginPage';
@@ -8,12 +8,20 @@ import CoursesPage from './pages/CoursesPage/CoursesPage';
 import CourseFormPage from './pages/CourseFormPage/CourseFormPage';
 
 function App() {
+	const [userData, setUserData] = useState({});
+
 	return (
 		<Routes>
-			<Route path='/' element={<Layout />}>
+			<Route
+				path='/'
+				element={<Layout setUserData={setUserData} userData={userData} />}
+			>
 				<Route index element={<Navigate to='/login' />} />
 				<Route path='/registration' element={<RegistrationPage />} />
-				<Route path='/login' element={<LoginPage />} />
+				<Route
+					path='/login'
+					element={<LoginPage setUserData={setUserData} />}
+				/>
 
 				<Route path='/courses'>
 					<Route index element={<CoursesPage />} />

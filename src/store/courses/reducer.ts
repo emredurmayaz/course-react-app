@@ -1,9 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-	fetchCourses,
-	deleteCourseService,
-	addCourseService,
-} from '../../services';
+import { fetchCourses, deleteCourseService, addCourseService } from './thunk';
 
 export interface CoursesApiResponseType {
 	successful: boolean;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAuthors, addAuthorService } from '../../services';
+import { fetchAuthors, addAuthorService } from './thunk';
 
 interface AuthorsApiResponseType {
 	successful: boolean;

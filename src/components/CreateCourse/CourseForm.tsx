@@ -6,7 +6,8 @@ import getCourseDuration from '../../helpers/getCourseDuration';
 import { v1 as uuidv1 } from 'uuid';
 import { mockedAuthorsList } from '../../constants';
 import { useAppDispatch } from 'src/store';
-import { addCourseService, addAuthorService } from '../../services';
+import { addCourseService } from '../../store/courses/thunk';
+import { addAuthorService } from '../../store/authors/thunk';
 
 const forbiddenSymbols = /[@#$%^&]/;
 

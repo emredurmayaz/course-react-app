@@ -1,6 +1,12 @@
 import React from 'react';
-import { Route, redirect } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
+import { useAppSelector } from 'src/store';
 
-//Create PrivateRoute component
-//This component should render any component as a children.
-//This component checks user's role and if it is ADMIN PrivateRoute returns component as children otherwise redirects to /courses.
+const PrivateRoute = ({ children, ...rest }) => {
+	const user = useAppSelector((state) => state.user.auth);
+	const userRole = user?.result.role;
+
+	userRole.toLowerCase() === 'admin' ? children : <Navigate to='/courses' />;
+};
+
+export default PrivateRoute;

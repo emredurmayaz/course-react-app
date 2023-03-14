@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from 'src/store';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import { Link } from 'react-router-dom';
-import { fetchCourses } from '../../services';
+import { fetchCourses } from '../../store/courses/thunk';
 
 export interface ICoursesListItem {
 	id: string;
@@ -23,6 +23,7 @@ const Courses = () => {
 	const [searchText, setsearchText] = useState('');
 	const courses = useAppSelector((state) => state.courses.responseData);
 	const dispatch = useAppDispatch();
+	console.log('courses :', courses);
 
 	useEffect(() => {
 		dispatch(fetchCourses());
@@ -55,7 +56,7 @@ const Courses = () => {
 				</Link>
 			</div>
 			{courses?.result.map((course) => {
-				return <CourseCard data={course} />;
+				return <CourseCard key={course.id} data={course} />;
 			})}
 		</div>
 	);

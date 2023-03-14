@@ -1,15 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
-import userReducer from './user/reducer';
-import coursesReducer from './courses/reducer';
-import authorsReducer from './authors/reducer';
+// import userReducer from './user/reducer';
+// import coursesReducer from './courses/reducer';
+// import authorsReducer from './authors/reducer';
+import { rootReducer } from './rootReducer';
 
 export const store = configureStore({
-	reducer: {
-		user: userReducer,
-		courses: coursesReducer,
-		authors: authorsReducer,
-	},
+	reducer: rootReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

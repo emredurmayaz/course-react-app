@@ -1,12 +1,12 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from '@reduxjs/toolkit';
 import courses from './courses/reducer';
 import authors from './authors/reducer';
 import user from './user/reducer';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
 	courses,
 	authors,
 	user,
 });
 
-export const store = configureStore({ reducer: rootReducer });
+//export const store = configureStore({ reducer: rootReducer });

@@ -3,7 +3,10 @@ import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { saveLoginService, getUserService } from '../../services';
+import { saveLoginService } from '../../services';
+import { getUserService } from 'src/store/user/thunk';
+import axios from 'axios';
+import { saveUser } from 'src/store/user/reducer';
 
 interface ILogin {
 	email: string;
@@ -11,30 +14,71 @@ interface ILogin {
 	name: string;
 }
 
-function Login() {
-	const [email, setEmail] = useState('emredurmayaz@hotmail.com');
-	const [password, setPassword] = useState('Bursa1963.');
+function Login({ setUserData }) {
+	const [email, setEmail] = useState('admin@email.com');
+	const [password, setPassword] = useState('admin123');
 	const [hasError, setError] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const data = useAppSelector((state) => state.user.response);
+	const auth = useAppSelector((state) => state.user.auth);
+	console.log('auth :', auth);
 
-	const sendRequest = () => {
-		dispatch(saveLoginService({ email, password }));
-		dispatch(getUserService());
+	const login = async () => {
+		try {
+			const loginData = await userLogin();
+			// saveLocalStorage('token', loginData.result);
+			// dispatch(saveUser({ loginData }));
+			localStorage.setItem('token', loginData.result);
+			dispatch(getUserService());
+		} catch (error) {
+			throw new Error(error);
+		}
 	};
 
-	useEffect(() => {
-		if (data && data.successful) {
-			navigate('/courses');
+	const userLogin = async () => {
+		try {
+			const userService = async (userdata: {
+				email: string;
+				password: string;
+			}) => {
+				return axios
+					.post(`http://localhost:4000/login`, {
+						email: userdata.email,
+						password: userdata.password,
+					})
+					.then((res) => {
+						return res.data;
+					});
+			};
+			const res = await userService({ email, password });
+			return res;
+		} catch (error) {
+			throw new Error(error);
 		}
-		console.log(data);
-	}, [data]);
+	};
+	// const saveLocalStorage = (key, value) => {
+	// 	localStorage.setItem(key, value);
+	// };
+
+	// const sendRequest = async () => {
+	// 	await dispatch(saveLoginService({ email, password }));
+	// 	localStorage.setItem('token', data.result);
+	// };
+
+	useEffect(() => {
+		if (auth && auth.successful) {
+			setUserData(auth);
+			if (localStorage.getItem('token')) {
+				navigate('/courses');
+			}
+		}
+	}, [auth]);
 
 	const handleSubmit = async (event) => {
 		try {
 			event.preventDefault();
-			await sendRequest();
+			await login();
 		} catch (error) {
 			setError(true);
 		}
