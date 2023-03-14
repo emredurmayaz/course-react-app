@@ -32,7 +32,6 @@ const Registration = () => {
 			});
 
 			const result = await response.json();
-			console.log(result);
 		} catch (error) {
 			throw new Error(error);
 		}
