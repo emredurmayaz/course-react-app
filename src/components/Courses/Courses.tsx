@@ -21,7 +21,7 @@ export interface IAuthorListItem {
 
 const Courses = () => {
 	const [searchText, setsearchText] = useState('');
-	const courses = useAppSelector((state) => state.courses.responseData);
+	const courses = useAppSelector((state) => state.courses.courses);
 	const dispatch = useAppDispatch();
 	console.log('courses :', courses);
 
@@ -55,7 +55,7 @@ const Courses = () => {
 					Add new course
 				</Link>
 			</div>
-			{courses?.result.map((course) => {
+			{courses.map((course) => {
 				return <CourseCard key={course.id} data={course} />;
 			})}
 		</div>

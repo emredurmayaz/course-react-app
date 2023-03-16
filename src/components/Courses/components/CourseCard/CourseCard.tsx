@@ -6,7 +6,14 @@ import { AuthorsResult } from '../../../../store/authors/types';
 import getCourseDuration from '../../../../helpers/getCourseDuration';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import { deleteCourseService } from '../../../../store/courses/thunk';
+import {
+	deleteCourseService,
+	getCourseServiceById,
+} from '../../../../store/courses/thunk';
+import {
+	deleteItem,
+	updateCourseItem,
+} from '../../../../store/courses/reducer';
 import { fetchAuthors } from '../../../../store/authors/thunk';
 
 interface ICourseCard {
@@ -37,7 +44,7 @@ const RightText = ({ title, value }: IRightText) => (
 	</div>
 );
 
-const CourseCard = ({ data }: ICourseCard) => {
+const CourseCard = ({ data }) => {
 	const navigate = useNavigate();
 	const authors = useAppSelector((state) => state.authors.responseData);
 	const users = useAppSelector((state) => state.user.auth);
@@ -50,9 +57,15 @@ const CourseCard = ({ data }: ICourseCard) => {
 	// 	return author?.name + ',';
 	// });
 
-	//Write a function delete course by calling deleteCourseService
 	const deleteCourse = () => {
 		dispatch(deleteCourseService(data.id));
+		dispatch(deleteItem(data.id));
+	};
+	//I need to write a function to send data which i click on the edit icon and send data to CourseForm Page and catch data in CourseForm Page and update data.
+	const updateCourse = () => {
+		dispatch(getCourseServiceById(data.id));
+		dispatch(updateCourseItem(data.id));
+		navigate('/courses/add');
 	};
 
 	useEffect(() => {
@@ -95,6 +108,7 @@ const CourseCard = ({ data }: ICourseCard) => {
 								}
 							/>
 							<Button
+								onClick={updateCourse}
 								image={
 									<svg
 										xmlns='http://www.w3.org/2000/svg'

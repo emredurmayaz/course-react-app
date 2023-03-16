@@ -19,3 +19,11 @@ export type CourseResult = {
 	authors: string[];
 	id: string;
 };
+
+export type CourseUpdateType = {
+	id: string;
+	title: string;
+	description: string;
+	duration: number;
+	authors: string[];
+};

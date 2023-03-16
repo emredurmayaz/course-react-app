@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { CourseResult, Course } from './types';
+import { CourseResult, Course, CourseUpdateType } from './types';
 
 export const fetchCourses = createAsyncThunk(
 	'courses/fetchCourses',
@@ -22,11 +22,20 @@ export const deleteCourseService = createAsyncThunk(
 	}
 );
 
-export const updateCourseService = createAsyncThunk(
-	'courses/update',
+export const getCourseServiceById = createAsyncThunk(
+	'courses/getById',
 	async (id: string) => {
 		return axios
-			.put(`http://localhost:4000/courses/${id}`, {
+			.get(`http://localhost:4000/courses/${id}`)
+			.then((res) => res.data);
+	}
+);
+
+export const updateCourseService = createAsyncThunk(
+	'courses/update',
+	async (updateCourse: CourseUpdateType) => {
+		return axios
+			.put(`http://localhost:4000/courses/${updateCourse.id}`, updateCourse, {
 				headers: { Authorization: `${localStorage.getItem('token')}` },
 			})
 			.then((res) => res.data);

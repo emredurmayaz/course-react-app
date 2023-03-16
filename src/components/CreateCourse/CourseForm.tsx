@@ -5,13 +5,18 @@ import Button from '../../common/Button/Button';
 import getCourseDuration from '../../helpers/getCourseDuration';
 import { v1 as uuidv1 } from 'uuid';
 import { mockedAuthorsList } from '../../constants';
-import { useAppDispatch } from 'src/store';
-import { addCourseService } from '../../store/courses/thunk';
+import { useAppDispatch, useAppSelector } from 'src/store';
+import {
+	addCourseService,
+	updateCourseService,
+} from '../../store/courses/thunk';
 import { addAuthorService } from '../../store/authors/thunk';
+import { useParams } from 'react-router-dom';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
 const CreateCourse = () => {
+	const { courseId } = useParams<{ courseId: string }>();
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [addAuthorList, setAddAuthorList] = useState(mockedAuthorsList);
@@ -19,6 +24,9 @@ const CreateCourse = () => {
 	const [author, setAuthor] = useState('');
 	const [duration, setDuration] = useState();
 	const dispatch = useAppDispatch();
+
+	console.log('courseID :', courseId);
+	// const courses = useAppSelector((state) => state.courses.responseData);
 
 	const handleTitleChange = (value) => {
 		if (!forbiddenSymbols.test(value)) {
@@ -53,7 +61,11 @@ const CreateCourse = () => {
 			duration: duration,
 			authors: deleteAuthorList.map((author) => author.id),
 		};
-		dispatch(addCourseService(newCourse));
+		if (courseId) {
+			dispatch(updateCourseService(newCourse));
+		} else {
+			dispatch(addCourseService(newCourse));
+		}
 	};
 
 	const createAuthor = () => {
