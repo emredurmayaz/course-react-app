@@ -12,7 +12,7 @@ const AuthorItem = ({ text, name, onClick, className }: IAuthorItem) => {
 	return (
 		<div className={className}>
 			<span className='mr-6'>{name}</span>
-			<Button text={text} onClick={onClick}></Button>
+			<Button type='button' text={text} onClick={onClick}></Button>
 		</div>
 	);
 };

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/store';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
-import { mockedAuthorsList, mockedCoursesList } from '../../constants';
 import { Link } from 'react-router-dom';
+import { fetchCourses } from '../../store/courses/thunk';
 
 export interface ICoursesListItem {
 	id: string;
@@ -19,15 +20,20 @@ export interface IAuthorListItem {
 }
 
 const Courses = () => {
-	const [searchCourse, setSearchCourse] = useState(mockedCoursesList);
 	const [searchText, setsearchText] = useState('');
+	const courses = useAppSelector((state) => state.courses.courses);
+	const dispatch = useAppDispatch();
 
-	const searchCourseClick = () => {
-		const filteredCourses = mockedCoursesList.filter((course) => {
-			return course.title.toLowerCase().includes(searchText.toLowerCase());
-		});
-		setSearchCourse(filteredCourses);
-	};
+	useEffect(() => {
+		dispatch(fetchCourses());
+	}, [dispatch]);
+
+	// const searchCourseClick = () => {
+	// 	const filteredCourses = courses.filter((course) => {
+	// 		return course.title.toLowerCase().includes(searchText.toLowerCase());
+	// 	});
+	// 	// setSearchCourse(filteredCourses);
+	// }; IN PROGRESS
 
 	return (
 		<div className='p-6'>
@@ -38,7 +44,7 @@ const Courses = () => {
 						placeholderText='Enter course name...'
 						value={searchText}
 						onChange={(e) => setsearchText(e.target.value)}
-						onClick={searchCourseClick}
+						// onClick={searchCourseClick}
 					/>
 				</div>
 				<Link
@@ -48,8 +54,8 @@ const Courses = () => {
 					Add new course
 				</Link>
 			</div>
-			{searchCourse.map((course) => {
-				return <CourseCard data={course} authors={mockedAuthorsList} />;
+			{courses.map((course) => {
+				return <CourseCard key={course.id} data={course} />;
 			})}
 		</div>
 	);

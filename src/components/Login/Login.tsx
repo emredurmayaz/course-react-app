@@ -1,45 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'src/store';
+import { saveLoginService } from '../../services';
+import { getUserService } from 'src/store/user/thunk';
+import axios from 'axios';
+import { saveUser } from 'src/store/user/reducer';
 
 interface ILogin {
 	email: string;
 	password: string;
+	name: string;
 }
 
-function Login() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+function Login({ setUserData }) {
+	const [email, setEmail] = useState('admin@email.com');
+	const [password, setPassword] = useState('admin123');
 	const [hasError, setError] = useState(false);
 	const navigate = useNavigate();
+	const dispatch = useAppDispatch();
+	const data = useAppSelector((state) => state.user.response);
+	const auth = useAppSelector((state) => state.user.auth);
 
-	const sendRequest = async () => {
+	const login = async () => {
 		try {
-			const response = await fetch('http://localhost:4000/login', {
-				method: 'POST',
-				body: JSON.stringify({ email, password }),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			if (!response.ok) {
-				throw new Error(
-					'There is something wrong with the response from the API'
-				);
-			}
-			const result = await response.json();
-			localStorage.setItem('token', result.result);
+			const loginData = await userLogin();
+			// saveLocalStorage('token', loginData.result);
+			// dispatch(saveUser({ loginData }));
+			localStorage.setItem('token', loginData.result);
+			dispatch(getUserService());
 		} catch (error) {
 			throw new Error(error);
 		}
 	};
 
+	const userLogin = async () => {
+		try {
+			const userService = async (userdata: {
+				email: string;
+				password: string;
+			}) => {
+				return axios
+					.post(`http://localhost:4000/login`, {
+						email: userdata.email,
+						password: userdata.password,
+					})
+					.then((res) => {
+						return res.data;
+					});
+			};
+			const res = await userService({ email, password });
+			return res;
+		} catch (error) {
+			throw new Error(error);
+		}
+	};
+	// const saveLocalStorage = (key, value) => {
+	// 	localStorage.setItem(key, value);
+	// };
+
+	// const sendRequest = async () => {
+	// 	await dispatch(saveLoginService({ email, password }));
+	// 	localStorage.setItem('token', data.result);
+	// };
+
+	useEffect(() => {
+		if (auth && auth.successful) {
+			setUserData(auth);
+			if (localStorage.getItem('token')) {
+				navigate('/courses');
+			}
+		}
+	}, [auth]);
+
 	const handleSubmit = async (event) => {
 		try {
 			event.preventDefault();
-			await sendRequest();
-			navigate('/courses');
+			await login();
 		} catch (error) {
 			setError(true);
 		}

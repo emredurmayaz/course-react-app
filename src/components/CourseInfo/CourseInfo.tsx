@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import Button from 'src/common/Button/Button';
 import { mockedCoursesList, mockedAuthorsList } from 'src/constants';
 import getCourseDuration from 'src/helpers/getCourseDuration';
 
@@ -15,6 +16,7 @@ interface ICourseInfo {
 function CourseInfo() {
 	const { courseId } = useParams<{ courseId: string }>();
 	const course = mockedCoursesList.find((course) => course.id === courseId);
+
 	if (!course) {
 		return <div>Course not found</div>;
 	}
@@ -32,6 +34,8 @@ function CourseInfo() {
 				<h2 className='text-black-600 font-bold text-xl mb-8'>
 					{course.title}
 				</h2>
+				<Button text={'Update Course'} />
+
 				<div className='grid grid-cols-2 gap-x-4'>
 					<p className='text-black-600 font-semibold'>{course.description}</p>
 					<div className='flex flex-col'>
