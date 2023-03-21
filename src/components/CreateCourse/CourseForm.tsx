@@ -10,7 +10,7 @@ import {
 	addCourseService,
 	getCourseServiceById,
 } from '../../store/courses/thunk';
-import { addAuthorService, fetchAuthors } from '../../store/authors/thunk';
+import { addAuthorService } from '../../store/authors/thunk';
 import { useParams, useNavigate } from 'react-router-dom';
 import { updateCourseService } from '../../services';
 
@@ -27,8 +27,6 @@ const CreateCourse = () => {
 	const authors = useAppSelector((state) => state.authors.responseData);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
-
-	// const courses = useAppSelector((state) => state.courses.responseData);
 
 	useEffect(() => {
 		dispatch(getCourseServiceById(courseId)).then((res) => {

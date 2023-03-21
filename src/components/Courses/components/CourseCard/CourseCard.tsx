@@ -1,28 +1,12 @@
 import React, { useEffect } from 'react';
 import Button from '../../../../common/Button/Button';
 import { IAuthorListItem } from '../../Courses';
-import { CourseResult } from '../../../../store/courses/types';
-import { AuthorsResult } from '../../../../store/authors/types';
 import getCourseDuration from '../../../../helpers/getCourseDuration';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/store';
-import {
-	deleteCourseService,
-	getCourseServiceById,
-} from '../../../../store/courses/thunk';
-import {
-	deleteItem,
-	updateCourseItem,
-} from '../../../../store/courses/reducer';
+import { deleteCourseService } from '../../../../store/courses/thunk';
+import { deleteItem } from '../../../../store/courses/reducer';
 import { fetchAuthors } from '../../../../store/authors/thunk';
-
-interface ICourseCard {
-	data: CourseResult;
-}
-
-interface IAuthors {
-	authors: AuthorsResult;
-}
 
 interface IRightText {
 	title: string;
