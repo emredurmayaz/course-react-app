@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
@@ -8,10 +8,11 @@ import { mockedAuthorsList } from '../../constants';
 import { useAppDispatch, useAppSelector } from 'src/store';
 import {
 	addCourseService,
-	updateCourseService,
+	getCourseServiceById,
 } from '../../store/courses/thunk';
-import { addAuthorService } from '../../store/authors/thunk';
-import { useParams } from 'react-router-dom';
+import { addAuthorService, fetchAuthors } from '../../store/authors/thunk';
+import { useParams, useNavigate } from 'react-router-dom';
+import { updateCourseService } from '../../services';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
@@ -22,11 +23,21 @@ const CreateCourse = () => {
 	const [addAuthorList, setAddAuthorList] = useState(mockedAuthorsList);
 	const [deleteAuthorList, setDeleteAuthorList] = useState([]);
 	const [author, setAuthor] = useState('');
-	const [duration, setDuration] = useState();
+	const [duration, setDuration] = useState(0);
+	const authors = useAppSelector((state) => state.authors.responseData);
+	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
-	console.log('courseID :', courseId);
 	// const courses = useAppSelector((state) => state.courses.responseData);
+
+	useEffect(() => {
+		dispatch(getCourseServiceById(courseId)).then((res) => {
+			const { title, description, duration } = res.payload.result;
+			setTitle(title);
+			setDescription(description);
+			setDuration(duration || 0);
+		});
+	}, [courseId]);
 
 	const handleTitleChange = (value) => {
 		if (!forbiddenSymbols.test(value)) {
@@ -51,18 +62,26 @@ const CreateCourse = () => {
 		setAddAuthorList([...addAuthorList, author]);
 	};
 
-	const createCourse = () => {
-		if (!createValidation()) return;
+	const createCourse = async (e) => {
+		e.preventDefault();
+		if (!checkValidation()) return;
 		const newCourse = {
-			id: uuidv1(),
-			title,
-			description,
+			title: title,
+			description: description,
 			creationDate: new Date().toLocaleDateString('tr-TR'),
 			duration: duration,
 			authors: deleteAuthorList.map((author) => author.id),
 		};
 		if (courseId) {
-			dispatch(updateCourseService(newCourse));
+			try {
+				await updateCourseService({
+					courseId: courseId,
+					updateCourse: newCourse,
+				});
+				navigate('/courses');
+			} catch (error) {
+				throw new Error();
+			}
 		} else {
 			dispatch(addCourseService(newCourse));
 		}
@@ -74,14 +93,13 @@ const CreateCourse = () => {
 			return;
 		}
 		const newAuthor = {
-			id: uuidv1(),
 			name: author,
 		};
 		dispatch(addAuthorService(newAuthor));
 		setAuthor('');
 	};
 
-	const createValidation = () => {
+	const checkValidation = () => {
 		if (title === '' || description === '' || duration === 0) {
 			alert('Please fill all fields...');
 			return false;
@@ -90,7 +108,7 @@ const CreateCourse = () => {
 	};
 
 	return (
-		<form onSubmit={createValidation} className='p-6'>
+		<form onSubmit={createCourse} className='p-6'>
 			<div className='flex flex-row justify-between'>
 				<div className='flex flex-col'>
 					<p>Title</p>
@@ -101,12 +119,8 @@ const CreateCourse = () => {
 					/>
 				</div>
 				<Button
-					text='Create Course'
-					onClick={(event) => {
-						createCourse();
-						createValidation();
-						event.preventDefault();
-					}}
+					text={courseId ? 'Update Course' : 'Create Course'}
+					type='submit'
 				></Button>
 			</div>
 			<div className='flex flex-col my-6'>
@@ -148,7 +162,7 @@ const CreateCourse = () => {
 						<Input
 							onChange={(e) => setDuration(e.target.value)}
 							placeholderText='Enter duration in minutes...'
-							value={duration}
+							value={Number(duration)}
 						/>
 						<h2 className='font-sans font-bold text-lg'>
 							Duration: {getCourseDuration(duration)}
@@ -158,7 +172,7 @@ const CreateCourse = () => {
 
 				<div>
 					<label className='font-sans font-bold text-lg'>Authors</label>
-					{addAuthorList.map((author) => {
+					{authors?.result.map((author) => {
 						return (
 							<AuthorItem
 								onClick={() => addAuthor(author)}

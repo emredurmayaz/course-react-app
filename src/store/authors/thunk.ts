@@ -17,7 +17,7 @@ export const addAuthorService = createAsyncThunk(
 		return axios
 			.post(
 				`http://localhost:4000/authors/add`,
-				{ author },
+				{ ...author },
 				{ headers: { Authorization: `${localStorage.getItem('token')}` } }
 			)
 			.then((res) => res.data);

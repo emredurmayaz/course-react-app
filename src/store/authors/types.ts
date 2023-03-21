@@ -5,7 +5,6 @@ export type Authors = {
 
 export type AuthorsResult = {
 	name: string;
-	id: string;
 };
 
 export const ADD_AUTHOR = 'ADD_AUTHOR';

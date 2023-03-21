@@ -25,17 +25,17 @@ export const deleteCourseService = createAsyncThunk(
 export const getCourseServiceById = createAsyncThunk(
 	'courses/getById',
 	async (id: string) => {
-		return axios
-			.get(`http://localhost:4000/courses/${id}`)
-			.then((res) => res.data);
+		return axios.get(`http://localhost:4000/courses/${id}`).then((res) => {
+			return res.data;
+		});
 	}
 );
 
 export const updateCourseService = createAsyncThunk(
 	'courses/update',
-	async (updateCourse: CourseUpdateType) => {
+	async ({ courseId, updateCourse }: any) => {
 		return axios
-			.put(`http://localhost:4000/courses/${updateCourse.id}`, updateCourse, {
+			.put(`http://localhost:4000/courses/${courseId}`, updateCourse, {
 				headers: { Authorization: `${localStorage.getItem('token')}` },
 			})
 			.then((res) => res.data);

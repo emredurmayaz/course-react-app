@@ -23,7 +23,6 @@ const Courses = () => {
 	const [searchText, setsearchText] = useState('');
 	const courses = useAppSelector((state) => state.courses.courses);
 	const dispatch = useAppDispatch();
-	console.log('courses :', courses);
 
 	useEffect(() => {
 		dispatch(fetchCourses());

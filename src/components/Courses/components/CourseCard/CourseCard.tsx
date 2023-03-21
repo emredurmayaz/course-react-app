@@ -49,8 +49,6 @@ const CourseCard = ({ data }) => {
 	const authors = useAppSelector((state) => state.authors.responseData);
 	const users = useAppSelector((state) => state.user.auth);
 	const dispatch = useAppDispatch();
-	// console.log('users :', users);
-	// console.log('authors :', authors);
 
 	// const authorsList = data.authors.map((authorId) => {
 	// 	const author = authors.find((author) => author.id === authorId);
@@ -61,11 +59,9 @@ const CourseCard = ({ data }) => {
 		dispatch(deleteCourseService(data.id));
 		dispatch(deleteItem(data.id));
 	};
-	//I need to write a function to send data which i click on the edit icon and send data to CourseForm Page and catch data in CourseForm Page and update data.
+
 	const updateCourse = () => {
-		dispatch(getCourseServiceById(data.id));
-		dispatch(updateCourseItem(data.id));
-		navigate('/courses/add');
+		navigate(`/courses/update/${data.id}`);
 	};
 
 	useEffect(() => {

@@ -15,6 +15,14 @@ export const saveLoginService = createAsyncThunk(
 	}
 );
 
+export const updateCourseService = async ({ courseId, updateCourse }: any) => {
+	return axios
+		.put(`http://localhost:4000/courses/${courseId}`, updateCourse, {
+			headers: { Authorization: `${localStorage.getItem('token')}` },
+		})
+		.then((res) => res.data);
+};
+
 export const saveLogoutService = createAsyncThunk(
 	'logout/saveLogout',
 	async () => {

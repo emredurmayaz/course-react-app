@@ -17,7 +17,6 @@ export type CourseResult = {
 	creationDate: string;
 	duration: number;
 	authors: string[];
-	id: string;
 };
 
 export type CourseUpdateType = {

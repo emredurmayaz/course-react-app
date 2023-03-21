@@ -22,7 +22,6 @@ function Login({ setUserData }) {
 	const dispatch = useAppDispatch();
 	const data = useAppSelector((state) => state.user.response);
 	const auth = useAppSelector((state) => state.user.auth);
-	console.log('auth :', auth);
 
 	const login = async () => {
 		try {

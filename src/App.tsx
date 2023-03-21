@@ -28,6 +28,7 @@ function App() {
 					<Route path=':courseId' element={<CourseInfoPage />} />
 				</Route>
 				<Route path='/courses/add' element={<CourseFormPage />} />
+				<Route path='/courses/update/:courseId' element={<CourseFormPage />} />
 			</Route>
 		</Routes>
 	);
