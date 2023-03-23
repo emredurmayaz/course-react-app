@@ -28,7 +28,7 @@ const RightText = ({ title, value }: IRightText) => (
 	</div>
 );
 
-const CourseCard = ({ data }) => {
+const CourseCard = ({ data }: any) => {
 	const navigate = useNavigate();
 	const authors = useAppSelector((state) => state.authors.responseData);
 	const users = useAppSelector((state) => state.user.auth);
