@@ -55,7 +55,9 @@ const Courses = () => {
 				</Link>
 			</div>
 			{courses.map((course) => {
-				return <CourseCard key={course.id} data={course} />;
+				return (
+					<CourseCard key={course.id} data={course} data-testid='course-card' />
+				);
 			})}
 		</div>
 	);

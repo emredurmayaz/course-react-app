@@ -24,9 +24,11 @@ function Header({ userData, setUserData }): JSX.Element {
 
 	return (
 		<div className='flex justify-between items-center px-6 py-4 border-4 border-indigo-600'>
-			<Logo />
+			<Logo data-testid='logo' />
 			<div className='flex flex-row gap-x-12 items-center'>
-				<h3 className='font-sans text-lg font-bold'>{userData.name}</h3>
+				<h3 className='font-sans text-lg font-bold' data-testid='user-testname'>
+					{userData.name}
+				</h3>
 				{!isUserLoggedIn && <Button text='Logout' onClick={handleLogout} />}
 			</div>
 		</div>

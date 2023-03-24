@@ -23,13 +23,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\" --env=jsdom",
     "eject": "react-scripts eject",
     "eslint": "eslint --ext .ts --ext .tsx src",
     "eslint:fix": "eslint --fix --ext .ts --ext .tsx src",
     "test:nowatch": "react-scripts test --watchAll=false",
     "prepare": "husky install",
-    "prepublish": "npm run eslint:fix"
+    "prepublish": "npm run eslint:fix && npm run test:nowatch"
   },
   "eslintConfig": {
     "extends": [
@@ -61,6 +61,7 @@
     "eslint-plugin-react": "^7.32.2",
     "husky": "^8.0.3",
     "prettier": "^2.8.4",
+    "react-test-renderer": "^18.2.0",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.9.5"
   }
